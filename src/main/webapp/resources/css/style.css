@@ -1,0 +1,82 @@
+/* Login form css... */
+h1
+{
+color:#00008B;
+}
+/* End of login form css.. */
+
+/* register page css */
+body {
+  background-color:#fff;
+  -webkit-font-smoothing: antialiased;
+  font: normal 14px Roboto,arial,sans-serif;
+}
+
+.container {
+    padding: 25px;
+    position: fixed;
+}
+
+.form-login {
+    background-color: #EDEDED;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 15px;
+    border-color:#d2d2d2;
+    border-width: 5px;
+    box-shadow:0 1px 0 #cfcfcf;
+}
+
+h4 { 
+ border:0 solid #fff; 
+ border-bottom-width:1px;
+ padding-bottom:10px;
+ text-align: center;
+ color:#00008B;
+}
+
+.form-control {
+    border-radius: 10px;
+}
+
+.wrapper {
+    text-align: center;
+}
+.input-group
+    	{
+			float: left;
+			width: 100%;
+			margin-bottom: 0;
+		}
+        
+.input-group-addon 
+    	{
+			border-right: 0;
+			/*color: #b3b3b3;*/
+			font-size: 14px;
+			background: #fff;
+			padding: 6px 12px;
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 1;
+			color: #555;
+			text-align: center;
+			background-color: #eee;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+		}
+        .mycolor 
+    	{
+			color: #00008B   ;
+		}
+        .margin-bottom-20 
+    	{
+			margin-bottom: 20px;
+		}
+		.col-md-offset-3
+		{
+			padding:80px;
+		}
+/* end of register form css */
