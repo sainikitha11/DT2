@@ -1,0 +1,42 @@
+<web-app
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/j2ee"
+	version="2.4" id="WebApp_ID">
+	<display-name>cart</display-name>
+	
+<!-- 	defines a name for the servlet and specifies the compiled class that executes the servlet -->
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+<!-- It	controls how to access a servlet -->
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	<!-- It provides parameters to the entire context / web application and also used to change config file location. -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/application-context.xml<!-- ,/WEB-INF/application-security.xml --></param-value>
+	</context-param>
+	
+	<!-- The listener ContextLoaderListener is used to create root WebApplicationContext -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- <filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		DelegatingFilterProxy provides the link between web.xml and the application context
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping> -->
+ 
+ </web-app>

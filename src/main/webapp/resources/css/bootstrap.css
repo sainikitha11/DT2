@@ -1,0 +1,15 @@
+/*.listbox{
+    width: 20%; 
+    margin: auto;
+   position: fixed;
+  background-position: center 
+
+}*/
+.carousel-inner>.item>img,
+.carousel-inner>.item>a>img
+{
+	width:500px;
+	margin:auto;
+	height:500px;
+	}
+
