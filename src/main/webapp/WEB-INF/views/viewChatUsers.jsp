@@ -44,8 +44,10 @@
     </div>
 		<ul class="messages"></ul>
     <div class="bottom_wrapper clearfix">
+    Your Chatting with ${friend.name}
         <div class="message_input_wrapper">
             <input class="message_input" placeholder="Type your message here..." />
+            <input type="hidden" 
         </div>
         <div class="send_message">
             <div class="icon"></div>
@@ -56,7 +58,7 @@
 	<div class='chatUsers'>
 	<ui>
 		<c:forEach var="c" items="${chatusers}">
-			<li><a href="">${c.name}</a></li>
+			<li><a href="startChart?frdid=${c.userid}">${c.name}</a></li>
 		</c:forEach>
 	</ui>
 	</div>

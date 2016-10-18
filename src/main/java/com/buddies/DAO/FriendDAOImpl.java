@@ -6,6 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -78,14 +79,15 @@ public class FriendDAOImpl implements FriendDAO
 	}
 
 	@Transactional(propagation=Propagation.SUPPORTS)
-	public void retriveFriend(int frdid) {
+	public User retriveFriend(int frdid) {
 		Session s=sf.getCurrentSession();
 		Transaction t=s.beginTransaction();
 		System.out.println("friend retrived");
 		Criteria c=sf.getCurrentSession().createCriteria(User.class);
-		Friend uf=s.get(Friend.class, frdid);
-		System.out.println(uf.getFrdid());
+		c.add(Restrictions.eq("userid", frdid));
+		User u=(User)c.uniqueResult();
 		t.commit();
+		return u;
 	}
 
 }

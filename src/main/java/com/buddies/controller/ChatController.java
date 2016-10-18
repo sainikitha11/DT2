@@ -3,6 +3,8 @@ package com.buddies.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -39,13 +41,16 @@ public class ChatController {
 		return  mv; 
 	}
 	
-	@RequestMapping(value=  { "viewChatUsers"})
-	public ModelAndView startChart(HttpRequest request) {
+	@RequestMapping(value=  { "startChart"})
+	public ModelAndView startChart(HttpServletRequest request) {
 		System.out.println("start chat");
-		
+		String frdid=request.getParameter("frdid");
+		System.out.println("hg");
 		ModelAndView mv=new ModelAndView("viewChatUsers");
+		System.out.println("hgsdc");
 		mv.addObject("chatusers", iUserService.viewUsers());
-		mv.addObject("friend",iFriendService.)
+		System.out.println("hcvh");
+		mv.addObject("friend",iFriendService.retriveFriend(Integer.parseInt(frdid)));
 		return  mv; 
 	}
 	

@@ -31,7 +31,7 @@ public class FriendService implements IFriendService
 		return frd.viewAllRequest(fndid);
 	}
 
-	public void retriveFriend(int frdid) {
-		frd.retriveFriend(frdid);		
+	public User retriveFriend(int frdid) {
+		return frd.retriveFriend(frdid);		
 	}
 }

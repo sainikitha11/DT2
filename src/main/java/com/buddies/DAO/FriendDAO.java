@@ -11,5 +11,5 @@ public interface FriendDAO
 	public void updateStatus(UserFriend uf);
 	public List<UserFriend> viewAllFriends();
 	public List<UserFriend> viewAllRequest(int fndid);
-	public void retriveFriend(int frdid);
+	public User retriveFriend(int frdid);
 }
