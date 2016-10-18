@@ -16,14 +16,4 @@ public class CommentService implements ICommentService
 	{
 		cd.addComment(comment);
 	}
-
-	public boolean deleteComment(int id)
-	{
-		return cd.deleteComment(id);
-	}
-
-	public void updateComment(Comment comment)
-	{
-		cd.updateComment(comment);
-	}
 }

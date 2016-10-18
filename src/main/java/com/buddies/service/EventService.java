@@ -1,5 +1,7 @@
 package com.buddies.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +24,7 @@ public class EventService implements IEventService
 		return e.deleteEvent(id);
 	}
 
-	public void updateEvent(Event event)
-	{
-		e.updateEvent(event);
+	public List<Event> viewAllEvents() {
+		return e.viewAllEvents();
 	}
 }

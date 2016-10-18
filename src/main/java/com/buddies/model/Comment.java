@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -22,7 +23,10 @@ public class Comment
 	@NotNull
 	private Date date;
 
+	@ManyToOne
+	private User user;
 	
+	//implementing getters and setters
 	public Integer getCid() {
 		return cid;
 	}
@@ -45,5 +49,13 @@ public class Comment
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

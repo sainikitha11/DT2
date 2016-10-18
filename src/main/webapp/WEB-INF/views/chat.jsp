@@ -240,12 +240,12 @@
                 return sendMessage(getMessageText());
             }
         });
-        sendMessage('Hello Philip! :)');
+        sendMessage('Hello ! :)');
         setTimeout(function () {
-            return sendMessage('Hi Sandy! How are you?');
+            return sendMessage('Hi How are you?');
         }, 1000);
         return setTimeout(function () {
-            return sendMessage('I\'m fine, thank you!');
+            return sendMessage('I am fine, thank you!');
         }, 2000);
     });
 }.call(this));

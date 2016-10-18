@@ -34,6 +34,7 @@ public class Event
 	@Transient
 	private MultipartFile image;
 
+	//implementing getters and setters
 	public Integer getEid() {
 		return eid;
 	}

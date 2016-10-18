@@ -14,9 +14,9 @@ public class UserService implements IUserService
 	@Autowired(required=true)
 	private UserDAO ud; 
 	
-	public void signUp(User user) 
+	public void addUser(User user) 
 	{
-		ud.signUp(user);		
+		ud.addUser(user);		
 	}
 
 	public User verifyMail(User u) 
@@ -39,9 +39,7 @@ public class UserService implements IUserService
 		ud.activateUser(id);
 	}
 
-	public void makeAdmin(int id) 
-	{
-		ud.makeAdmin(id);
+	public User getUser() {
+		return ud.getUser();
 	}
-
 }

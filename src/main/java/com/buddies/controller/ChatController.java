@@ -1,38 +1,70 @@
 package com.buddies.controller;
 
+import java.io.IOException;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpRequest;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.buddies.DAO.ChatDAO;
-import com.buddies.model.Chat;
 import com.buddies.service.IChatService;
+import com.buddies.service.IFriendService;
+import com.buddies.service.IUserService;
 
-@RestController
-public class ChatController 
-{
+@Controller
+public class ChatController {
+	
 	@Autowired
 	IChatService iChatService;
+
+	@Autowired
+	IUserService iUserService;
 	
-	@Autowired 
-	ChatDAO chatDAO;
+
+	@Autowired
+	IFriendService iFriendService;
 	
-	private static final Logger logger=LoggerFactory.getLogger(ChatController.class);
+	@RequestMapping(value=  { "viewChatUsers"})
+	public ModelAndView viewblog() {
+		System.out.println("view chat");
+		ModelAndView mv=new ModelAndView("viewChatUsers");
+		mv.addObject("chatusers", iUserService.viewUsers());
+		/*System.out.println("hyu");
+		mv.addObject("friendRequests",iFriendService.viewAllRequest(iUserService.getUser().getUserid()));*/
+		return  mv; 
+	}
 	
-	//creating a new chat
-	@PostMapping(value="/chat")
-	public ResponseEntity<List<Chat>> addComment(@RequestBody Chat chat)
-	{
-		logger.debug("calling mthods after creating");
-		iChatService.createChat(chat);
-		//chatDAO.createChat(chat);
-		return new ResponseEntity<List<Chat>>(HttpStatus.OK);
+	@RequestMapping(value=  { "viewChatUsers"})
+	public ModelAndView startChart(HttpRequest request) {
+		System.out.println("start chat");
+		
+		ModelAndView mv=new ModelAndView("viewChatUsers");
+		mv.addObject("chatusers", iUserService.viewUsers());
+		mv.addObject("friend",iFriendService.)
+		return  mv; 
+	}
+	
+	public String toJson(List data){
+		String jsonData="";
+		ObjectMapper mapper=new ObjectMapper();
+		try {
+			jsonData=mapper.writeValueAsString(data);
+			System.out.println(jsonData);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonData;
 	}
 }

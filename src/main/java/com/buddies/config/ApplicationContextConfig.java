@@ -19,7 +19,9 @@ import com.buddies.model.Chat;
 import com.buddies.model.Comment;
 import com.buddies.model.Event;
 import com.buddies.model.Forum;
+import com.buddies.model.Friend;
 import com.buddies.model.User;
+import com.buddies.model.UserFriend;
 import com.buddies.model.UserRole;
 
 
@@ -63,6 +65,8 @@ public class ApplicationContextConfig
     	sessionBuilder.addAnnotatedClasses(Event.class);
     	sessionBuilder.addAnnotatedClasses(Comment.class);
     	sessionBuilder.addAnnotatedClasses(Forum.class);
+    	sessionBuilder.addAnnotatedClasses(UserFriend.class);
+    	sessionBuilder.addAnnotatedClasses(Friend.class);
     	return sessionBuilder.buildSessionFactory();
     }
     

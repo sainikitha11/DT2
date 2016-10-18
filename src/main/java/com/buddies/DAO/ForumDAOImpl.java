@@ -1,5 +1,6 @@
 package com.buddies.DAO;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -26,6 +27,7 @@ public class ForumDAOImpl implements ForumDAO
 	{
 		Session s=sf.getCurrentSession();
 		Transaction t=s.beginTransaction();
+		question.setDate(new Date());
 		System.out.println("forum add question");
 		s.saveOrUpdate(question);
 		System.out.println("forum added");

@@ -27,9 +27,10 @@ public class UserDAOImpl implements UserDAO
 	@Autowired
 	private SessionFactory sf;
 	
+	User user;
 	
 	@Transactional(propagation=Propagation.SUPPORTS)
-	public void signUp(User user)
+	public void addUser(User user)
 	{
 		Session s=sf.getCurrentSession();
 		Transaction t=s.beginTransaction();
@@ -55,10 +56,10 @@ public class UserDAOImpl implements UserDAO
 		c.add(Restrictions.eq("mail",u.getMail()));
 		c.add(Restrictions.eq("pwd",u.getPwd()));
 		System.out.println("name pwd");
-		u=(User) c.uniqueResult();
-		System.out.println(u.getName());
+		user=(User) c.uniqueResult();
+		System.out.println(user.getName());
 		t.commit();
-		return u;
+		return user;
 	}
 
 	@Transactional(propagation=Propagation.SUPPORTS)
@@ -79,7 +80,7 @@ public class UserDAOImpl implements UserDAO
 		Session s=sf.getCurrentSession();
 		Transaction t=s.beginTransaction();
 		Object o=s.load(User.class, new Integer(id));
-		User user=(User)o;
+		user=(User)o;
 		user.setEnabled(false);
 		t.commit();
 	}
@@ -90,19 +91,12 @@ public class UserDAOImpl implements UserDAO
 		Session s=sf.getCurrentSession();
 		Transaction t=s.beginTransaction();
 		Object o=s.load(User.class, new Integer(id));
-		User user=(User)o;
+		user=(User)o;
 		user.setEnabled(true);
 		t.commit();
 	}
 
-	@Transactional(propagation=Propagation.SUPPORTS)
-	public void makeAdmin(int id)
-	{
-		Session s=sf.getCurrentSession();
-		Transaction t=s.beginTransaction();
-		Object o=s.load(User.class, new Integer(id));
-		UserRole user=(UserRole)o;
-		user.setAuthority("ROLE_ADMIN");
-		t.commit();
+	public User getUser() {
+		return user;
 	}
 }

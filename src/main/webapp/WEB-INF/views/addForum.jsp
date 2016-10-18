@@ -15,6 +15,8 @@
 <title>forum</title>
 </head>
 <body>
+<div ng-app="myApp" ng-controller="dataCtrl">
+Enter Forum:  <input type="text"  ng-model="search">&nbsp&nbsp<span class="glyphicon glyphicon-search"></span>
 <hr></hr>
     <table class="table table-striped">
     <tr>

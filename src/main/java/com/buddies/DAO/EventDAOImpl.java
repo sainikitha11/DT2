@@ -1,7 +1,9 @@
 package com.buddies.DAO;
 
 import java.util.Date;
+import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.buddies.model.Blog;
 import com.buddies.model.Event;
 
 @Repository("EventDAO")
@@ -48,12 +51,17 @@ public class EventDAOImpl implements EventDAO
 	}
 
 	@Transactional(propagation=Propagation.SUPPORTS)
-	public void updateEvent(Event event)
+	public List<Event> viewAllEvents() 
 	{
 		Session s=sf.getCurrentSession();
 		Transaction t=s.beginTransaction();
-		System.out.println("update event");
-		s.update(event);
+		System.out.println("view event");
+		Criteria c=sf.getCurrentSession().createCriteria(Event.class);
+		System.out.println("creating");
+		List<Event> l1=(List<Event>)c.list();
+		System.out.println("list2514");
 		t.commit();
+		System.out.println("comm7i8t9ed45");
+		return l1;
 	}
 }

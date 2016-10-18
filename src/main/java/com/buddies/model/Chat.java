@@ -29,6 +29,7 @@ public class Chat
 	@NotNull
 	private Date date;
 
+	//implementing getters and setters
 	public String getChatid() {
 		return chatid;
 	}

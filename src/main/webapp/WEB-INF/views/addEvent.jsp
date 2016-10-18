@@ -16,29 +16,25 @@
 </head>
 <body>
 
-<script src="resources/js/BlogController.js"></script>
+<script src="resources/js/EventController.js"></script>
 
 
 <!-- Search Blog : <input type="text"> ng-model="searchkeyword"> -->
 <div ng-app="myApp" ng-controller="dataCtrl">
-Enter Blog Name:  <input type="text"  ng-model="search">&nbsp&nbsp<span class="glyphicon glyphicon-search"></span>
+Enter Event Name:  <input type="text"  ng-model="search">&nbsp&nbsp<span class="glyphicon glyphicon-search"></span>
     <hr></hr>
     <table class="table table-striped">
     <tr>
-    <th>Blog Id</th>
-    <th>Blog Title</th>
-    <th>Blog Status</th>
-    <th>Blog Reason</th>
-    <th>Blog Content</th>
-    <th>Blog User</th>
+    <th>Event Id</th>
+    <th>Event Name</th>
+    <th>Event Description</th>
+    
     </tr>
         <tr ng-repeat="resource in names | filter:search">
-             <td>{{resource.blogid}}</td>
-            <td>{{ resource.title}}</td>
-            <td>{{ resource.status}}</td>
-            <td>{{ resource.reason}}</td>
-            <td>{{ resource.content}}</td>
-            <td>{{ resource.user.userid}}</td>
+             <td>{{resource.eid}}</td>
+            <td>{{ resource.ename}}</td>
+            <td>{{ resource.edesc}}</td>
+            
             <!-- <td><img src="resources/images/{{resource.product_id}}.jpg" style="width: 200px;height:150px"></td>
             <td><a href="deleteProduct?id={{resource.product_id}}">Delete</a></td> -->
         </tr>    
@@ -51,7 +47,7 @@ Enter Blog Name:  <input type="text"  ng-model="search">&nbsp&nbsp<span class="g
 angular.module('myApp',[]).controller('dataCtrl',function($scope)
 		{
 	
-		$scope.names=${blogs};
+		$scope.names=${events};
 		$scope.orderByMe=function(x)
 		{
 			$scope.myOrderBy=x;

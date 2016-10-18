@@ -1,59 +1,61 @@
 package com.buddies.controller;
 
-import java.util.List;
+import java.io.IOException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.servlet.http.HttpServletRequest;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.buddies.DAO.EventDAO;
+import com.buddies.model.Blog;
 import com.buddies.model.Event;
 import com.buddies.service.IEventService;
 
-@RestController
-public class EventController 
+@Controller
+public class EventController
 {
 	@Autowired
 	IEventService iEventService;
 	
-	@Autowired 
-	EventDAO eventDAO;
-	
-private static final Logger logger=LoggerFactory.getLogger(EventController.class);
-	
-	//creating a new event
-	@PostMapping(value="/event")
-	public ResponseEntity<List<Event>> addEvent(@RequestBody Event event)
+	@RequestMapping(value = { "event" })
+	public ModelAndView view(HttpServletRequest request,@ModelAttribute("buddychat")Event u,BindingResult result) 
 	{
-		logger.debug("calling mthods after creating");
-		eventDAO.addEvent(event);
-		return new ResponseEntity<List<Event>>(HttpStatus.OK);
+		iEventService.addEvent(u);
+		System.out.println("View blog");
+		ModelAndView mv= new ModelAndView("event","command",new Event());
+		return mv;
 	}
-		
-	//deleting an event by its id
-	@DeleteMapping(value="/event/{id}")
-	public ResponseEntity<List<Event>> deleteEvent(@RequestBody Event event,@PathVariable int id)
-	{
-		logger.debug("delete event");
-		eventDAO.deleteEvent(id);
-		return new ResponseEntity<List<Event>>(HttpStatus.OK);
-	}
-		
-	//updating an event
-	@PutMapping(value="/event/{id}")
-	public ResponseEntity<List<Event>> update(@RequestBody Event event)
-	{
-		logger.debug("update event");
-		eventDAO.updateEvent(event);
-		return new ResponseEntity<List<Event>>(HttpStatus.OK);
+	
+	@RequestMapping(value=  { "addEvent"})
+	public ModelAndView viewEvent() {
+		System.out.println("viewEvent");
+		String jsonData="";
+		//objectmapper is used 2 bring value instead of returning the total object
+		ObjectMapper mapper=new ObjectMapper();
+		try 
+		{
+			jsonData=mapper.writeValueAsString(iEventService.viewAllEvents());
+			System.out.println(jsonData);
+		}
+		catch (JsonGenerationException e)
+		{
+			e.printStackTrace();
+		}
+		catch (JsonMappingException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return new ModelAndView("addEvent","command",new Event()).addObject("events", jsonData);
 	}
 }

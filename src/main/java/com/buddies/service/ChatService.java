@@ -16,5 +16,4 @@ public class ChatService implements IChatService
 	{
 		c.createChat(chat);
 	}
-	
 }

@@ -1,95 +1,62 @@
 package com.buddies.controller;
 
-import java.util.List;
+import java.io.IOException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.servlet.http.HttpServletRequest;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.buddies.DAO.ForumDAO;
 import com.buddies.model.Forum;
 import com.buddies.service.IForumService;
 
-@RestController
-public class ForumController
+@Controller
+public class ForumController 
 {
 	@Autowired
 	IForumService iForumService;
 	
-	@Autowired 
-	ForumDAO forumDAO;
-	
-private static final Logger logger=LoggerFactory.getLogger(ForumController.class);
-	
-	//retrive list of forum
-	@GetMapping("/forum")
-	public ResponseEntity<List<Forum>> view()
+	@RequestMapping(value = { "forum" })
+	public ModelAndView addBlog(HttpServletRequest request,@ModelAttribute("buddychat")Forum f,BindingResult result) 
 	{
-		logger.debug("calling methods for viewing blogs");
-		List<Forum> l1=forumDAO.viewForum();
-		if(l1.isEmpty())
-		{
-			return new ResponseEntity<List<Forum>>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<List<Forum>>(HttpStatus.OK);	
+		System.out.println("hi forum");
+		iForumService.addQuestion(f);
+		System.out.println("f added");
+		ModelAndView mv= new ModelAndView("forum","command",new Forum());
+		System.out.println("new forum");
+		return mv;
 	}
 	
-	//retrive single forum by id
-	@GetMapping(value="/forum/{id}")
-	public ResponseEntity<List<Forum>> view(@RequestBody Forum forum,@PathVariable int id)
-	{
-		logger.debug("call methods one by one");
-		forum= forumDAO.getQuestion(id);
-		if(forum==null)
+	@RequestMapping(value=  { "addForum"})
+	public ModelAndView addforum() {
+		System.out.println("addforum");
+		String jsonData="";
+		//objectmapper is used 2 bring value instead of returning the total object
+		ObjectMapper mapper=new ObjectMapper();
+		try 
 		{
-			return new ResponseEntity<List<Forum>>(HttpStatus.NOT_FOUND);
+			jsonData=mapper.writeValueAsString(iForumService.viewForum());
+			System.out.println(jsonData);
 		}
-		return new ResponseEntity<List<Forum>>(HttpStatus.OK);
-	}
-	
-	//creating a new forum
-	@PostMapping(value="/forum")
-	public ResponseEntity<List<Forum>> addForum(@RequestBody Forum forum,@PathVariable Forum question)
-	{
-		logger.debug("calling mthods after creating");
-		int id = 0;
-		if(forumDAO.getQuestion(id)==null)
+		catch (JsonGenerationException e)
 		{
-			return new ResponseEntity<List<Forum>>(HttpStatus.NO_CONTENT);
+			e.printStackTrace();
 		}
-		forumDAO.addQuestion(question);
-		return new ResponseEntity<List<Forum>>(HttpStatus.OK);
-	}
-	
-	//deleting a forum by its id
-	@DeleteMapping(value="/forum/{id}")
-	public ResponseEntity<List<Forum>> deleteBlog(@RequestBody Forum forum,@PathVariable int id)
-	{
-		logger.debug("delete a blog");
-		if(forumDAO.getQuestion(id)==null)
+		catch (JsonMappingException e) 
 		{
-			return new ResponseEntity<List<Forum>>(HttpStatus.NO_CONTENT);
+			e.printStackTrace();
 		}
-		forumDAO.deleteQuestion(id);
-		return new ResponseEntity<List<Forum>>(HttpStatus.OK);
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return new ModelAndView("addforum","command",new Forum()).addObject("forum", jsonData);
 	}
-	
-	/*//update a forum
-	@PutMapping(value="/forum/{id}")
-	public ResponseEntity<List<Forum>> update(@RequestBody Forum forum)
-	{
-		logger.debug("update blog");
-		forumDAO.
-		return new ResponseEntity<List<Blog>>(HttpStatus.OK);
-	}*/
 }
-

@@ -15,7 +15,6 @@ import org.hibernate.validator.constraints.Email;
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
-
 public class User
 {
 	@Id
@@ -43,7 +42,11 @@ public class User
 	
 	@Transient
 	private MultipartFile image;
+	
+	@Column
+	private Integer role;
 
+	//implementing getters and setters...
 	public Integer getUserid() {
 		return userid;
 	}
@@ -106,5 +109,13 @@ public class User
 
 	public void setImage(MultipartFile image) {
 		this.image = image;
+	}
+
+	public Integer getRole() {
+		return role;
+	}
+
+	public void setRole(Integer role) {
+		this.role = role;
 	}
 }

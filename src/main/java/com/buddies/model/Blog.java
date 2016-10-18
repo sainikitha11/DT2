@@ -42,6 +42,7 @@ public class Blog
 	@Transient
 	private MultipartFile image;
 	
+	//implementing getters and setters
 	public Integer getBlogid() {
 		return blogid;
 	}

@@ -30,29 +30,4 @@ public class CommentDAOImpl implements CommentDAO
 		s.saveOrUpdate(comment);
 		t.commit();
 	}
-
-	@Transactional(propagation=Propagation.SUPPORTS)
-	public boolean deleteComment(int id)
-	{
-		Session s=sf.getCurrentSession();
-		Transaction t=s.beginTransaction();
-		System.out.println("delete comment");
-		Comment c1=(Comment)s.load(Comment.class, id);
-		s.delete(c1);
-		t.commit();
-		if(c1!=null)
-			return true;
-		else 
-			return false;
-	}
-
-	@Transactional(propagation=Propagation.SUPPORTS)
-	public void updateComment(Comment comment) 
-	{
-		Session s=sf.getCurrentSession();
-		Transaction t=s.beginTransaction();
-		System.out.println("update comment");
-		s.update(comment);
-		t.commit();
-	}
 }

@@ -1,91 +1,116 @@
 package com.buddies.controller;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.buddies.model.User;
+import com.buddies.model.UserFriend;
+import com.buddies.service.IFriendService;
 import com.buddies.service.IUserService;
 
-@RestController
-public class UserController 
+@Controller
+public class UserController
 {
+	@Autowired
+	IUserService iUserService;
 	
-	@Autowired 
-	IUserService iUserService; //service which is used for performing all the data retrival/manipulation work
+	@Autowired
+	IFriendService iFriendService;
 	
-	//retrive all users
-	@RequestMapping(value="/user/", method=RequestMethod.GET)
-	//@GetMapping("/user")
-	public ResponseEntity <List<User>> listAllUsers()
+	@RequestMapping(value="storeRegister", method=RequestMethod.POST)
+	public ModelAndView register(HttpServletRequest request,@ModelAttribute("buddychat")User u,BindingResult result)
 	{
-		List<User> user=iUserService.viewUsers();
-		if(user.isEmpty())
+		System.out.println("register");
+		ModelAndView mv=new ModelAndView("storeRegister");
+		System.out.println("signing");
+		if(result.hasErrors())
 		{
-			return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
+			System.out.println("hello errors");
+			mv=new ModelAndView("signUp","command",new User());
+			mv.addObject("errors",result.getAllErrors());
+			for(ObjectError s:result.getAllErrors())
+			{
+				System.out.println(s);
+			}
 		}
-		return new ResponseEntity<List<User>>(HttpStatus.OK);
+		else
+		{
+			iUserService.addUser(u);
+			mv=new ModelAndView("login","command",new User());
+		}
+		return mv;
 	}
 	
-	//retriving single user
-	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getUser(@PathVariable("id") User userid) {
-        System.out.println("Fetching User with id " + userid);
-        User user = iUserService.verifyMail(userid);
-        if (user == null) {
-            System.out.println("User with id " + userid + " not found");
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<User>(user, HttpStatus.OK);
-    }
-	
-	//creating a user
-	@RequestMapping(value = "/user/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> createUser(@RequestBody User user,@RequestParam("username")String mail,@RequestParam("password")String pwd)
+	@RequestMapping(value="loginUser")
+	public ModelAndView login(@ModelAttribute("buddychat")User u,BindingResult result)
 	{
-		if(user.getUserid()==null)
-		{
-			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<User>(HttpStatus.OK);
+		System.out.println("login..");
+		User user=iUserService.verifyMail(u);
+		ModelAndView mv=new ModelAndView("home","command",new User());
+		return mv;
 	}
 	
-	//Update a User
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
-        System.out.println("Updating User " + id);
-         
-        User currentUser = iUserService.verifyMail(user);
-         
-        if (currentUser==null) {
-            System.out.println("User with id " + id + " not found");
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-        }
-       // iUserService.saveOrUpdate(user);
-        return new ResponseEntity<User>(currentUser, HttpStatus.OK);
-    }
-    
-    //delete a user
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<User> deleteUser(@PathVariable("id") int id,User u) {
-        System.out.println("Fetching & Deleting User with id " + id);
- 
-        User user = iUserService.verifyMail(u);
-        if (user == null) {
-            System.out.println("Unable to delete. User with id " + id + " not found");
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-        }
- 
-        iUserService.deactivateUser(id);
-        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
-    }
+	@RequestMapping(value=  { "viewFriend"})
+	public ModelAndView addUser() {
+		System.out.println("user added");
+		System.out.println("viewfriend");
+		int fndid;
+		ModelAndView mv=new ModelAndView("viewFriend","command",new User());
+		//System.out.println("hi frds "+iFriendService.viewAllRequest(iUserService.getUser().getUserid()).get(0).getReqid());
+		mv.addObject("users", toJson(iUserService.viewUsers()));
+		System.out.println("hyu");
+		mv.addObject("friendRequests",iFriendService.viewAllRequest(iUserService.getUser().getUserid()));
+		return  mv; 
+	}
+	
+	public String toJson(List data){
+		String jsonData="";
+		ObjectMapper mapper=new ObjectMapper();
+		try {
+			jsonData=mapper.writeValueAsString(data);
+			System.out.println(jsonData);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonData;
+	}
+	
+	@RequestMapping(value = { "/addFriend" })
+	public ModelAndView view(HttpServletRequest request, @ModelAttribute("buddychat") UserFriend f,BindingResult result) 
+	{
+		System.out.println("addfnd");
+		String fid = request.getParameter("u");
+		System.out.println("uuuu");
+		System.out.println(fid);
+		System.out.println("hsab");
+		int Uid = 0;
+		int frdid = 0;
+		System.out.println("user n frds");
+		System.out.println(iUserService.getUser().getName());
+		System.out.println("sai");
+		iFriendService.addFriend(iUserService.getUser(),Integer.parseInt(fid));
+		System.out.println("nikki");
+		return new ModelAndView("home","welcome",iUserService.getUser());
+	}
 }

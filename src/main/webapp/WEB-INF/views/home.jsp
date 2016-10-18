@@ -77,7 +77,8 @@ li a:hover:not(.active) {
   <li><a class="active" href="#home" style="color:#00008B;"><span class="glyphicon glyphicon-home"></span>Home</a></li>
   <li><a href="#about">About Us</a></li>
   <li><a href="#contact">Contact Us</a></li>
-  <li><a href="#blog">Blog</a></li>
+  <li><a href="addBlog">Blog</a></li>
+    <li><a href="viewFriend">Friend's List</a></li>
 </ul>
 </body>
 </html>
