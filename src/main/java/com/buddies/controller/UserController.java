@@ -1,8 +1,10 @@
 package com.buddies.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.codehaus.jackson.JsonGenerationException;
@@ -17,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.buddies.model.Friend;
 import com.buddies.model.User;
 import com.buddies.model.UserFriend;
 import com.buddies.service.IFriendService;
+import com.buddies.service.IMailService;
 import com.buddies.service.IUserService;
 
 @Controller
@@ -31,29 +35,43 @@ public class UserController
 	@Autowired
 	IFriendService iFriendService;
 	
+	@Autowired
+	IMailService iMailService;
+	
 	@RequestMapping(value="storeRegister", method=RequestMethod.POST)
-	public ModelAndView register(HttpServletRequest request,@ModelAttribute("buddychat")User u,BindingResult result)
+	public ModelAndView register(HttpServletRequest request,@ModelAttribute("buddychat")User u,BindingResult result)throws MessagingException
 	{
-		System.out.println("register");
+		System.out.println("Register"+u.getDate());
+		u.setDate(new Date());
 		ModelAndView mv=new ModelAndView("storeRegister");
-		System.out.println("signing");
-		if(result.hasErrors())
-		{
-			System.out.println("hello errors");
-			mv=new ModelAndView("signUp","command",new User());
-			mv.addObject("errors",result.getAllErrors());
-			for(ObjectError s:result.getAllErrors())
-			{
-				System.out.println(s);
-			}
+		System.out.println("store");
+		boolean flag=true;
+		if(result.hasErrors()){
+			flag=false;
+			System.out.println("duster");
+			mv=new ModelAndView("signup", "command", new User());
+			System.out.println("controller");
+					mv.addObject("errors", result.getAllErrors());
+					for(ObjectError s:result.getAllErrors()){
+						System.out.println(s.toString());
+						if(s.toString().contains("date") && result.getAllErrors().size()==1 ){
+							System.out.println("jennifer"
+									+ "");
+							flag=true;
+						}
+					}
+					
 		}
-		else
-		{
+		if(flag){
+			System.out.println("chalk");
 			iUserService.addUser(u);
-			mv=new ModelAndView("login","command",new User());
+			System.out.println("teddy");
+			iMailService.send(u, "Welcome to chatting", "Hi Welcome to chatting");
+			mv=new ModelAndView("login", "command", new User());
 		}
 		return mv;
 	}
+		
 	
 	@RequestMapping(value="loginUser")
 	public ModelAndView login(@ModelAttribute("buddychat")User u,BindingResult result)
@@ -112,5 +130,16 @@ public class UserController
 		iFriendService.addFriend(iUserService.getUser(),Integer.parseInt(fid));
 		System.out.println("nikki");
 		return new ModelAndView("home","welcome",iUserService.getUser());
+	}
+	
+	@RequestMapping(value = { "/acceptfriend" })
+	public String view(HttpServletRequest request, @ModelAttribute("buddychat") Friend f,BindingResult result) 
+	{
+		System.out.println("accfnd");
+		String fid = request.getParameter("f");
+		System.out.println("jdsbc");
+		iFriendService.updateFriendStatus(Integer.parseInt(fid));
+		System.out.println("teddy");
+		return "redirect:/viewFriend";
 	}
 }

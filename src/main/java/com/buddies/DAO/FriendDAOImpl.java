@@ -48,12 +48,19 @@ public class FriendDAOImpl implements FriendDAO
 	}
 
 	@Transactional(propagation=Propagation.SUPPORTS)
-	public void updateStatus(UserFriend uf)
+	public void updateFriendStatus(int reqid)
 	{
 		Session s=sf.getCurrentSession();
 		Transaction t=s.beginTransaction();
 		System.out.println("status of friend");
-		s.update(uf);
+		Criteria c=sf.getCurrentSession().createCriteria(UserFriend.class);
+		System.out.println("khcu");
+    	c.add(Restrictions.eq("Reqid", reqid));
+    	System.out.println("hgdscy");
+    	UserFriend f=(UserFriend)c.uniqueResult();
+    	System.out.println("jh");
+    	f.setStatus("Accepted");
+    	s.update(f);
 		t.commit();
 	}
 
@@ -73,11 +80,14 @@ public class FriendDAOImpl implements FriendDAO
 		Transaction t=s.beginTransaction();
 		System.out.println("sai");
 		Criteria c=sf.getCurrentSession().createCriteria(UserFriend.class);
+		c.add(Restrictions.eq("status","Requested"));
 		List<UserFriend> f=(List<UserFriend>)c.list();
 		t.commit();
 		return f;
 	}
 
+	
+	//chat purpose
 	@Transactional(propagation=Propagation.SUPPORTS)
 	public User retriveFriend(int frdid) {
 		Session s=sf.getCurrentSession();

@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -15,26 +14,26 @@ public class Chat
 {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String chatid;
+	private Integer chatid;
 	
-	@Size(min = 2, max = 50, message="message")
+	
+	@Size(min = 1, max = 50, message="message")
 	private String message;
 	
-	@Size(min = 2, max = 50, message="from user")
-	private String fromUser;
+	@NotNull
+	private Integer fromUser;
 	
-	@Size(min = 2, max = 50, message="to user")
-	private String toUser;
+	@NotNull
+	private Integer toUser;
 	
 	@NotNull
 	private Date date;
 
-	//implementing getters and setters
-	public String getChatid() {
+	public Integer getChatid() {
 		return chatid;
 	}
-	
-	public void setChatid(String chatid) {
+
+	public void setChatid(Integer chatid) {
 		this.chatid = chatid;
 	}
 
@@ -42,24 +41,24 @@ public class Chat
 		return message;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public String getFromUser() {
+	public Integer getFromUser() {
 		return fromUser;
 	}
 
-	public void setFromUser(String fromUser) {
+	public void setFromUser(Integer fromUser) {
 		this.fromUser = fromUser;
 	}
 
-	public String getToUser() {
+	public Integer getToUser() {
 		return toUser;
 	}
 
-	public void setToUser(String toUser) {
+	public void setToUser(Integer toUser) {
 		this.toUser = toUser;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	public Date getDate() {
@@ -68,5 +67,5 @@ public class Chat
 
 	public void setDate(Date date) {
 		this.date = date;
-	}
+	}	
 }

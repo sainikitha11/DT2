@@ -42,25 +42,47 @@
         </div> -->
 	<div class="title">Chat</div>
     </div>
-		<ul class="messages"></ul>
+	<%-- 	<ul class="messages"></ul>
     <div class="bottom_wrapper clearfix">
     Your Chatting with ${friend.name}
         <div class="message_input_wrapper">
             <input class="message_input" placeholder="Type your message here..." />
-            <input type="hidden" 
+            <input type="hidden" name="frdid">
         </div>
         <div class="send_message">
             <div class="icon"></div>
             <div class="btn btn-info">Send</div>
         </div>
-    </div>
+    </div> --%>
+	</div>
+	   <form:form action="storechat" method="post">	
+    <c:forEach var="m" items="${msgs}">
+    <p>${m.getMessage()}</p>
+    <%-- ${m.getMessage()} ${m.getFromUser()} ${m.getToUser()}  --%>
+    <c:if test="${m.fromUser=chat.userid}">
+      <div class="msgs">
+        <p>${m.getMessage()}</p>    
+      </div> 
+    </c:if>
+    <c:if test="${m.toUser==chat.userid}"> 
+      <div class="msgs">
+        <p>${m.getMessage()}</p>    
+      </div>
+    </c:if>
+    </c:forEach>
+        <div class="message_input_wrapper">
+               <form:input type="text" path="message" placeholder="Type your message here..." />         
+           <form:input type="hidden" path="fromUser"  placeholder="Type your message here..." />     
+           <button type="submit"class="btn btn-info">Send</button>     
+        </div>         
+    </form:form>
 	</div>
 	<div class='chatUsers'>
-	<ui>
+	<ul>
 		<c:forEach var="c" items="${chatusers}">
 			<li><a href="startChart?frdid=${c.userid}">${c.name}</a></li>
 		</c:forEach>
-	</ui>
+	</ul>
 	</div>
 </body>
 </html>

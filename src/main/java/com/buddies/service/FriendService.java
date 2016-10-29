@@ -19,8 +19,8 @@ public class FriendService implements IFriendService
 		frd.addFriend(uid, frdid);
 	}
 
-	public void updateStatus(UserFriend uf) {
-		frd.updateStatus(uf);
+	public void updateFriendStatus(int reqid) {
+		frd.updateFriendStatus(reqid);
 	}
 
 	public List<UserFriend> viewAllFriends() {

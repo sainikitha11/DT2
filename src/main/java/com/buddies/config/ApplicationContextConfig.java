@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -77,4 +79,28 @@ public class ApplicationContextConfig
 		HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
 		return transactionManager;
 	}
+	
+	@Autowired
+	@Bean(name="javaMailSender")
+	public JavaMailSender javaMailService() {
+		
+		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+			
+		Properties mailProperties = new Properties();
+        
+        mailProperties.put("mail.smtp.host", "smtp.gmail.com");
+        mailProperties.put("mail.smtp.auth","true");
+        mailProperties.put("mail.smtp.starttls.enable", "true");
+        mailProperties.put("mail.smtp.port", "587");
+        mailProperties.setProperty("mail.debug", "true");
+        
+	        javaMailSender.setJavaMailProperties(mailProperties);
+	        javaMailSender.setHost("smtp.gmail.com");
+	        javaMailSender.setPort(587);
+	        javaMailSender.setProtocol("smtp");
+	        javaMailSender.setUsername("sainikitha.11@gmail.com");
+	        javaMailSender.setPassword("cutiepie1120");
+	        
+	        return javaMailSender;
+	    }
 }

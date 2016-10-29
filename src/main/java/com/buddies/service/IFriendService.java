@@ -8,7 +8,7 @@ import com.buddies.model.UserFriend;
 public interface IFriendService
 {
 	public void addFriend(User uid,int frdid);
-	public void updateStatus(UserFriend uf);
+	public void updateFriendStatus(int reqid);
 	public List<UserFriend> viewAllFriends();
 	public List<UserFriend> viewAllRequest(int fndid);
 	public User retriveFriend(int frdid);
