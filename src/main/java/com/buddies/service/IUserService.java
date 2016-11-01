@@ -12,4 +12,5 @@ public interface IUserService
 	public void deactivateUser(int id);
 	public void activateUser(int id);
 	public User getUser();
+	
 }

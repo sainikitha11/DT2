@@ -38,6 +38,8 @@ public class UserController
 	@Autowired
 	IMailService iMailService;
 	
+	User user;
+	
 	@RequestMapping(value="storeRegister", method=RequestMethod.POST)
 	public ModelAndView register(HttpServletRequest request,@ModelAttribute("buddychat")User u,BindingResult result)throws MessagingException
 	{
@@ -82,17 +84,53 @@ public class UserController
 		return mv;
 	}
 	
-	@RequestMapping(value=  { "viewFriend"})
-	public ModelAndView addUser() {
-		System.out.println("user added");
+	@RequestMapping(value=  {"viewFriend"})
+	public ModelAndView viewfriend() {
 		System.out.println("viewfriend");
 		int fndid;
 		ModelAndView mv=new ModelAndView("viewFriend","command",new User());
-		//System.out.println("hi frds "+iFriendService.viewAllRequest(iUserService.getUser().getUserid()).get(0).getReqid());
+		//System.out.println("hi frds "+iFriendService.viewAllRequest(iUserService.get().getUid()).get(0).getFriend().getUser().getFirstname());
 		mv.addObject("users", toJson(iUserService.viewUsers()));
-		System.out.println("hyu");
 		mv.addObject("friendRequests",iFriendService.viewAllRequest(iUserService.getUser().getUserid()));
+		mv.addObject("friends",iFriendService.viewAllFriends(iUserService.getUser()));
+		mv.addObject("user",iUserService.getUser());
 		return  mv; 
+	}
+	
+	@RequestMapping(value = { "/addFriend" })
+	public ModelAndView view(HttpServletRequest request, @ModelAttribute("buddychat") UserFriend f,BindingResult result) 
+	{
+		System.out.println("addfnd");
+		String fid = request.getParameter("u");
+		System.out.println(fid);
+		int Uid = 0;
+		int fndid = 0;
+		System.out.println("user n frds");
+		System.out.println(iUserService.getUser().getName());
+		iFriendService.addFriend(iUserService.getUser(),Integer.parseInt(fid));
+		System.out.println("red");    
+    	UserFriend userFriends=new UserFriend();
+    	System.out.println("!!!!");
+    	userFriends.setStatus("Requested");
+    	Friend friend=new Friend();
+    	System.out.println("heheee");
+		friend.setUser(user);
+    	List<User> frnd=iUserService.viewUsers();
+        friend.setUser(user);
+    	System.out.println("lol");
+    	userFriends.setFriend(friend);
+    	System.out.println("pichhhiiiiii.......");
+    	return new ModelAndView("home","welcome",iUserService.getUser());
+	}
+	
+	@RequestMapping(value = { "/acceptfriend" })
+	public String view(HttpServletRequest request, @ModelAttribute("buddychat") Friend f,BindingResult result) 
+	{
+		System.out.println("accfnd");
+		String fid = request.getParameter("f");
+		iFriendService.updateFriend(Integer.parseInt(fid));
+		System.out.println("teddy");
+		return "redirect:/viewFriend";
 	}
 	
 	public String toJson(List data){
@@ -112,34 +150,5 @@ public class UserController
 			e.printStackTrace();
 		}
 		return jsonData;
-	}
-	
-	@RequestMapping(value = { "/addFriend" })
-	public ModelAndView view(HttpServletRequest request, @ModelAttribute("buddychat") UserFriend f,BindingResult result) 
-	{
-		System.out.println("addfnd");
-		String fid = request.getParameter("u");
-		System.out.println("uuuu");
-		System.out.println(fid);
-		System.out.println("hsab");
-		int Uid = 0;
-		int frdid = 0;
-		System.out.println("user n frds");
-		System.out.println(iUserService.getUser().getName());
-		System.out.println("sai");
-		iFriendService.addFriend(iUserService.getUser(),Integer.parseInt(fid));
-		System.out.println("nikki");
-		return new ModelAndView("home","welcome",iUserService.getUser());
-	}
-	
-	@RequestMapping(value = { "/acceptfriend" })
-	public String view(HttpServletRequest request, @ModelAttribute("buddychat") Friend f,BindingResult result) 
-	{
-		System.out.println("accfnd");
-		String fid = request.getParameter("f");
-		System.out.println("jdsbc");
-		iFriendService.updateFriendStatus(Integer.parseInt(fid));
-		System.out.println("teddy");
-		return "redirect:/viewFriend";
 	}
 }

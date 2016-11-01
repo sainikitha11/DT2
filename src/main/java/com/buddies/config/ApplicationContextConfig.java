@@ -99,7 +99,7 @@ public class ApplicationContextConfig
 	        javaMailSender.setPort(587);
 	        javaMailSender.setProtocol("smtp");
 	        javaMailSender.setUsername("sainikitha.11@gmail.com");
-	        javaMailSender.setPassword("cutiepie1120");
+	        javaMailSender.setPassword("p*****d");
 	        
 	        return javaMailSender;
 	    }

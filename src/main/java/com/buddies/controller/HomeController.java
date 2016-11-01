@@ -16,6 +16,13 @@ public class HomeController
 		return new ModelAndView("home");
 	}
 	
+	@RequestMapping(value = { "logout" })
+	public ModelAndView logout() 
+	{
+		System.out.println("logout");
+		return new ModelAndView("home","command",new User());
+	}
+	
 	@RequestMapping(value = { "login" })
 	public ModelAndView login() 
 	{

@@ -69,8 +69,9 @@ li a:hover:not(.active) {
 <nav class="navbar-inverse">
   <div class="navbar-header">
       <div class="navbar-brand" style="height:40px; font-size:25px; color:#00008B;">Buddies <div><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHAT</span></div></div>
-      <div style="float: right; position: absolute; top: 80px; right: 120px;color:#00008B;"><a href="login" style="color:#00008B;"><span class="glyphicon glyphicon-log-in"></span> Login</a><br></div>
-      <div style="float: right; position: absolute; top: 80px; right: 40px;color:#00008B;"><a href="signUp" style="color:#00008B;"><span class="glyphicon glyphicon-user"></span> Register</a><br></div>
+      <div style="float: right; position: absolute; top: 80px; right: 180px;color:#00008B;"><a href="login" style="color:#00008B;"><span class="glyphicon glyphicon-log-in"></span> Login</a><br></div>
+      <div style="float: right; position: absolute; top: 80px; right: 110px;color:#00008B;"><a href="signUp" style="color:#00008B;"><span class="glyphicon glyphicon-user"></span> Register</a><br></div>
+      <div style="float: right; position: absolute; top: 80px; right: 40px;color:#00008B;"><a href="logout" style="color:#00008B;"><span class="glyphicon glyphicon-log-in"></span> Log out</a><br></div>
     </div>
     </nav><br><br><br><br>
     <ul>

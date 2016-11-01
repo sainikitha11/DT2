@@ -88,7 +88,7 @@ a {
 <hr>
 <div class="container bootstrap snippet">
    <div class="row">
-   <div class="col-lg-12">
+   <div class="col-lg-12">3
    <div class="main-box no-header clearfix">
    <div class="main-box-body clearfix">
    <div class="table-responsive">
@@ -103,6 +103,14 @@ a {
           </tr>
         </thead>
         <tbody>
+        <c:forEach var="f" items="${friends}">
+  			<label class="name">
+        		<c:if test="${f.friend.userFriend.userid==user.userid}">
+         				${f.friend.user.name}<br>
+         		</c:if>
+        	</label>
+  		</c:forEach>
+        
            <tr ng-repeat="resource in names | filter:search">
              <td>
                <img src="http://bootdey.com/img/Content/{{resource.userid}}.jpg" alt="">
@@ -110,7 +118,7 @@ a {
              </td>
              <td>2013/08/12</td>
              <td class="text-center">
-               <span class="label label-default">request pending</span>
+               <span class="label label-default">{{resource.status}}</span>
              </td>
              <td>
                <a href="#">{{resource.mail}}</a>
@@ -120,6 +128,7 @@ a {
                <span class="fa-stack">
                <i class="fa fa-square fa-stack-2x"></i>
                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+      
                </span>
                </a>
                <a href="#" class="table-link">
